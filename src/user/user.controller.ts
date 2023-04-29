@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -32,10 +33,18 @@ export class UserController {
     description: 'User cannot register. Try again.',
   })
   async createUser(
-    @Body(SETTINGS.VALIDATION_PIPE)
-    createUserDto: CreateUserDto,
+    @Body(SETTINGS.VALIDATION_PIPE) createUserDto: CreateUserDto,
   ): Promise<User> {
     return this.userService.createUser(createUserDto);
+  }
+
+  // check username already taken by input value
+  @Get('/check-username')
+  async checkUsernameTaken(
+    @Query('username') username: string,
+  ): Promise<{ usernameTaken: boolean }> {
+    const user = await this.userService.findByUsername(username);
+    return { usernameTaken: !!user };
   }
 
   @Get()

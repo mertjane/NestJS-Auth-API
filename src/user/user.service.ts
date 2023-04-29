@@ -1,5 +1,5 @@
 import { User } from './entities/user.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -10,7 +10,19 @@ export class UserService {
     user.username = createUserDto.username;
     user.email = createUserDto.email;
     user.password = createUserDto.password;
-    return await user.save();
+    await user.save();
+
+    const savedUser = await user.save();
+
+    return {
+      id: savedUser.id,
+      username: savedUser.username,
+      email: savedUser.email,
+    } as User;
+  }
+
+  async findByUsername(username: string): Promise<User> {
+    return User.findOne({ where: { username } });
   }
 
   async getUserByEmail(email: string): Promise<User | undefined> {

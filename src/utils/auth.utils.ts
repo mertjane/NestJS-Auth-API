@@ -1,15 +1,14 @@
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 
 const USERNAME_VALIDATION_MESSAGE = {
-  EXIST: 'Sorry, that username is already taken',
-  SHORT: 'Username is too short, minimum length is 3 character',
+  EXIST: 'Username already taken',
+  SHORT: 'Username is too short, minimum length is 4 character',
   LONG: 'Username is too long, maximum length is 24 character',
   EMPTY: 'Username cannot be empty field',
 };
 
 const EMAIL_VALIDATION_MESSAGE = {
-  EXIST:
-    'The email you entered is already registered. Please choose a different email',
+  EXIST: 'Email already registered',
   INVALID: 'Please enter a valid email address',
   EMPTY: 'Email cannot be empty field',
 };
@@ -23,6 +22,8 @@ const PASSWORD_VALIDATION_MESSAGE = {
   LONG: 'Password is too long, maximum length is 24 character',
 };
 
+const LOGIN_VALIDATION_MESSAGE = 'Wrong username or password';
+
 const VALIDATION_PIPE = new ValidationPipe({
   errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
 });
@@ -35,6 +36,7 @@ export const REGEX = {
   PASSWORD_VALIDATION_MESSAGE,
   USERNAME_VALIDATION_MESSAGE,
   EMAIL_VALIDATION_MESSAGE,
+  LOGIN_VALIDATION_MESSAGE,
 };
 
 export const SETTINGS = {

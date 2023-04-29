@@ -16,7 +16,7 @@ export class CreateUserDto {
     example: 'jhondoe',
   })
   @IsNotEmpty({ message: REGEX.USERNAME_VALIDATION_MESSAGE.EMPTY })
-  @MinLength(3, { message: REGEX.USERNAME_VALIDATION_MESSAGE.SHORT })
+  @MinLength(4, { message: REGEX.USERNAME_VALIDATION_MESSAGE.SHORT })
   @MaxLength(24, { message: REGEX.USERNAME_VALIDATION_MESSAGE.LONG })
   username: string;
 
@@ -60,6 +60,9 @@ export class CreateUserDto {
   @IsNotEmpty({ message: REGEX.PASSWORD_VALIDATION_MESSAGE.EMPTY })
   @Length(8, 24, {
     message: (args: ValidationArguments) => {
+      if (!args.value) {
+        return 'Password is required';
+      }
       if (args.value.length < 8) {
         return REGEX.PASSWORD_VALIDATION_MESSAGE.SHORT;
       } else if (args.value.length > 24) {

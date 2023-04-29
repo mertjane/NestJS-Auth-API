@@ -3,9 +3,12 @@ import {
   Injectable,
   BadRequestException,
   UnauthorizedException,
+  HttpStatus,
+  HttpException,
 } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
+import { REGEX } from 'src/utils/auth.utils';
 
 @Injectable()
 export class AuthService {
@@ -13,25 +16,41 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
   ) {}
+  async validateUserCreds(
+    usernameOrEmail: string,
+    password: string,
+  ): Promise<any> {
+    let user;
 
-  async validateUserCreds(email: string, password: string): Promise<any> {
-    const user = await this.userService.getUserByEmail(email);
+    // check if the input is an email
+    if (usernameOrEmail.includes('@')) {
+      user = await this.userService.getUserByEmail(usernameOrEmail);
+    } else {
+      // assume input is a username
+      user = await this.userService.findByUsername(usernameOrEmail);
+    }
 
-    if (!user) throw new BadRequestException();
+    if (!user) {
+      throw new HttpException(
+        REGEX.LOGIN_VALIDATION_MESSAGE,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
 
-    if (!(await bcrypt.compare(password, user.password)))
-      throw new UnauthorizedException();
+    if (!(await bcrypt.compare(password, user.password))) {
+      throw new HttpException(
+        REGEX.LOGIN_VALIDATION_MESSAGE,
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
 
     return user;
   }
 
   async generateToken(user: any) {
-    return {
-      access_token: this.jwtService.sign({
-        username: user.username,
-        email: user.email,
-        sub: user.id,
-      }),
-    };
+    const { id, username, email } = user;
+    const payload = { id, username, email };
+    const access_token = this.jwtService.sign(payload);
+    return { access_token, ...payload };
   }
 }
