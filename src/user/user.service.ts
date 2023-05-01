@@ -1,10 +1,12 @@
 import { User } from './entities/user.entity';
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
+  constructor(private jwtService: JwtService) {}
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
     user.username = createUserDto.username;
@@ -13,12 +15,14 @@ export class UserService {
     await user.save();
 
     const savedUser = await user.save();
+    // const { access_token } = await this.authService.generateToken(savedUser);
 
     return {
       id: savedUser.id,
       username: savedUser.username,
       email: savedUser.email,
-    } as User;
+      // access_token: access_token,
+    } as unknown as User;
   }
 
   async findByUsername(username: string): Promise<User> {
@@ -43,5 +47,12 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+
+  async generateToken(user: User): Promise<any> {
+    const { id, username, email } = user;
+    const payload = { id, username, email };
+    const access_token = this.jwtService.sign(payload);
+    return { access_token, ...payload };
   }
 }

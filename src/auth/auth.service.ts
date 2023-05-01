@@ -1,11 +1,5 @@
 import { JwtService } from '@nestjs/jwt';
-import {
-  Injectable,
-  BadRequestException,
-  UnauthorizedException,
-  HttpStatus,
-  HttpException,
-} from '@nestjs/common';
+import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { REGEX } from 'src/utils/auth.utils';

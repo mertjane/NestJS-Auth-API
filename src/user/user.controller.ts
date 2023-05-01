@@ -1,3 +1,4 @@
+import { AuthService } from './../auth/auth.service';
 import {
   Controller,
   Get,
@@ -32,10 +33,17 @@ export class UserController {
   @ApiBadRequestResponse({
     description: 'User cannot register. Try again.',
   })
-  async createUser(
+  /*  async createUser(
     @Body(SETTINGS.VALIDATION_PIPE) createUserDto: CreateUserDto,
   ): Promise<User> {
     return this.userService.createUser(createUserDto);
+  } */
+  async createUser(
+    @Body(SETTINGS.VALIDATION_PIPE) createUserDto: CreateUserDto,
+  ): Promise<any> {
+    const user = await this.userService.createUser(createUserDto);
+    const token = await this.userService.generateToken(user);
+    return token;
   }
 
   // check username already taken by input value
