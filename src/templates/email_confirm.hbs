@@ -1,0 +1,170 @@
+<html>
+<head>
+    <title>Confirm Email</title>
+    <style>
+
+      *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body{
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .container{
+        width: 100%;
+        height: 100%;
+        background-color: #fdfdfd;
+        display: table;
+        table-layout: fixed;
+      }
+      .header{
+        width: 100%;
+        height: 90px;
+        padding: 14px 0;
+        display: table;
+        table-layout: fixed;
+      }
+      .logo-box{
+        width: 650px;
+        height: 100%;
+        margin: 0 auto;
+      }
+      .logo{
+        object-fit: contain;
+        width: 140px;
+      }
+      .main{
+        width: 100%;
+        display: table;
+      }
+      .card{
+        background-color: #ffff;
+        box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em, rgba(90, 125, 188, 0.05) 0px 0.25em 1em;
+        border: 1px solid #dddd;
+        border-radius: 3px;
+        width: 650px;
+        margin: 0 auto;
+        height: auto;
+        display: table;
+        table-layout: fixed;
+        color: #252525;
+      }
+      .welcome-text{
+        font-size: 28px;
+        font-weight: 500;
+        opacity: 0.8;
+        padding: 30px 30px 20px 24px;
+        color: #252525;
+      }
+      .body-text{
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 30px;
+        width: 98%;
+        opacity: 0.8;
+        padding: 7px 24px;
+        margin-bottom: 24px;
+        color: #252525;
+      }
+      button{
+        width: 240px;
+        height: 50px;
+        background-color: #40c057;
+        outline: none;
+        border: none;
+        color: #ffff;
+        font-size: 14.5px;
+        display: table;
+        text-align: center;
+        margin: 0 auto;
+        border-radius: 2px;
+      }
+      .confirm-link{
+        text-decoration: none;
+      }
+      .warning-text{
+        width: 70%;
+        line-height: 30px;
+        margin-top: 40px;
+        padding: 0 24px;
+      }
+      span{
+        text-decoration: underline;
+      }
+      .end-text{
+        width: 160px;
+        line-height: 25px;
+        margin-top: 40px;
+        padding: 30px 30px 20px 24px;
+      }
+      .footer{
+        width: 100%;
+        display: table;
+        table-layout: fixed;
+        text-align: center;
+        color: #252525;
+      }
+      .footer-logo{
+        margin-top: 12px;
+        width: 110px;
+        object-fit: contain;
+      }
+      .mini-text{
+        text-decoration: none;
+        font-size: 13px;
+        opacity: 0.8;
+        margin: 8px 0 12px 0;
+      }
+      .footer-text{
+        font-size: 13px;
+        opacity: 0.8;
+      }
+      .list{
+        width: 100%;
+        text-align: center;
+        display: table;
+        list-style-type: none;
+        margin-top: 12px;
+      }
+      .list-item{
+        font-size: 13px;
+        color: #2e60dfc9;
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 auto;
+        margin: 0 7px;
+      }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-box">
+                <img class="logo" src="https://i.ibb.co/Bs767YX/logo.png" alt="_logo">
+            </div>
+        </div>
+        <div class="main">
+            <div class="card">
+                <p class="welcome-text">Dear {{username}},</p>
+                <p class="body-text">We're happy to have you on board. To complete your registration, please confirm your email by clicking on the link we sent you.</p>
+                <a class="confirm-link" href={{confirmationLink}}><button>Confirm Link</button></a>
+                <p class="warning-text">If you did not initiate this request, please contact us immediately at <span>support@diplodev.com</span></p>
+                <p class="end-text">Regards, DiploDev Team</p>
+            </div>
+        </div>
+        <div class="footer">
+            <img class="footer-logo" src="https://i.ibb.co/Bs767YX/logo.png" alt="_footer-logo">
+            <p class="mini-text">Send with Confidence</p>
+            <p class="footer-text">All rights reserved. © 2023 Diplo Software and Consulting Ltd.</p>
+            <ul class="list">
+                <a class="list-links" href="www.smartape.com"><li class="list-item">Blog</li></a>
+                <a class="list-links" href="www.github.com"><li class="list-item">GitHub</li></a>
+                <a class="list-links" href="www.twitter.com"><li class="list-item">Twitter</li></a>
+                <a class="list-links" href="www.facebook.com"><li class="list-item">Facebook</li></a>
+                <a class="list-links" href="www.linkedin.com"><li class="list-item">Linkedin</li></a>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

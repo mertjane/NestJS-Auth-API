@@ -28,6 +28,14 @@ export class User extends BaseEntity {
   @Column()
   password: string;
 
+  @ApiProperty({ description: 'Email Confirmation', example: false })
+  @Column({ default: false })
+  isEmailConfirmed: boolean;
+
+  @ApiProperty({ description: 'Cookies', example: false })
+  @Column({ default: false })
+  isCookiesConfirmed: boolean;
+
   @ApiProperty({ description: 'When User was created' })
   @CreateDateColumn()
   createdAt: Date;

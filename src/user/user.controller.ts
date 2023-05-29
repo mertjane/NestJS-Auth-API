@@ -8,6 +8,7 @@ import {
   Param,
   Delete,
   Query,
+  BadRequestException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -20,10 +21,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { EmailService } from 'src/mailer/email.service';
+
 @ApiTags('User')
 @Controller()
 export class UserController {
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private readonly emailService: EmailService,
+  ) {}
 
   @Post('/register')
   @ApiCreatedResponse({
@@ -33,17 +39,26 @@ export class UserController {
   @ApiBadRequestResponse({
     description: 'User cannot register. Try again.',
   })
-  /*  async createUser(
-    @Body(SETTINGS.VALIDATION_PIPE) createUserDto: CreateUserDto,
-  ): Promise<User> {
-    return this.userService.createUser(createUserDto);
-  } */
   async createUser(
     @Body(SETTINGS.VALIDATION_PIPE) createUserDto: CreateUserDto,
   ): Promise<any> {
     const user = await this.userService.createUser(createUserDto);
     const token = await this.userService.generateToken(user);
-    return token;
+
+    await this.emailService.sendConfirmationEmail(
+      user.username,
+      user.email,
+      token,
+    );
+
+    return {
+      access_token: token.access_token,
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      isEmailConfirmed: user.isEmailConfirmed,
+      isCookiesConfirmed: user.isCookiesConfirmed,
+    };
   }
 
   // check username already taken by input value
@@ -61,8 +76,18 @@ export class UserController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async getUserById(@Param('id') id: string) {
+    const user = await this.userService.getUserById(+id);
+    return {
+      //access_token: user.access_token,
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      isEmailConfirmed: user.isEmailConfirmed,
+      isCookiesConfirmed: user.isCookiesConfirmed,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
   }
 
   @Patch(':id')

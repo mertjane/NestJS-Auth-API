@@ -80,4 +80,7 @@ export class CreateUserDto {
     },
   })
   confirm: string;
+
+  isEmailConfirmed: boolean;
+  isCookiesConfirmed: boolean;
 }
